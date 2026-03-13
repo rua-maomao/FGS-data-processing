@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# Load data
+file_path = '/content/heat comp.xlsx'
+data = pd.read_excel(file_path)
+
+# Generate correlation matrix
+df_cleaned = data.apply(pd.to_numeric, errors='coerce')
+df_cleaned = df_cleaned.dropna()
+correlation_matrix = df_cleaned.corr()
+
+# Set font size
+sns.set(font_scale=1.4)
+
+# Visualize heatmap
+plt.figure(figsize=(12, 10))
+sns.heatmap(
+    correlation_matrix,
+    annot=True,
+    cmap='coolwarm',
+    linewidths=0.5,
+    cbar_kws={'label': ''}
+)
+
+# Manually set axis labels with subscripts
+plt.gca().set_xticklabels([
+    "$\\Delta Z/Z_0$ at 1kHz",
+    "Sunlight (mmol)",
+    "Soil humidity (%)",
+    "Temperature (℃)",
+    "Soil EC (μs/cm)",
+    "Relative humidity (%)"
+], rotation=90)
+
+plt.gca().set_yticklabels([
+    "$\\Delta Z/Z_0$ at 1kHz",
+    "Sunlight (mmol)",
+    "Soil humidity (%)",
+    "Temperature (℃)",
+    "Soil EC (μs/cm)",
+    "Relative humidity (%)"
+], rotation=0)
+
+# Move x-axis labels to the top
+plt.gca().xaxis.set_ticks_position('top')
+
+# Adjust label rotation
+plt.xticks(rotation=30)
+
+plt.show()
